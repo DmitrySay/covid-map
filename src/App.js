@@ -3,9 +3,6 @@ import {Provider} from "react-redux";
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import store from "./lib/store";
 import MainPage from "./component/MainPage";
-//import Map from './component/Map'
-
-
 
 class App extends React.Component {
     render() {
