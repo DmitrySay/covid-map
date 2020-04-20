@@ -3,6 +3,7 @@ import {Provider} from "react-redux";
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import store from "./lib/store";
 import MainPage from "./component/MainPage";
+import NotFoundPage from "./component/NotFoundPage";
 
 class App extends React.Component {
     render() {
@@ -11,7 +12,7 @@ class App extends React.Component {
                 <Router>
                     <Switch>
                         <Route exact path="/" component={MainPage}/>
-                        {/*<Route component={NotFoundPage}/>*/}
+                        <Route component={NotFoundPage}/>
                     </Switch>
                 </Router>
             </Provider>
