@@ -8,18 +8,23 @@ import {addDataToMap} from 'kepler.gl/actions';
 // Kepler.gl Data processing APIs
 import Processors from 'kepler.gl/processors';
 // Sample data
-import covidData from '../data/04-16-2020.csv';
 import config from '../data/covid-config';
 // Kepler.gl Schema APIs
 import KeplerGlSchema from 'kepler.gl/schemas';
 // Component and helpers
 import downloadJsonFile from "./File-download";
 
+import axios from 'axios';
+
 //const MAPBOX_TOKEN = process.env.MapboxAccessToken;
 const MAPBOX_TOKEN = 'pk.eyJ1Ijoic2R2MSIsImEiOiJjazh5cDFzY2Ywa2MyM2V0YWMwbjIyc253In0.zrh-D0UvFa2b-fe2hBToLQ';
+const GIT_URL = 'https://raw.githubusercontent.com/DmitrySay/covid-map/master/src/data/report.csv';
 
 
 class MainPage extends Component {
+    state = {
+        data: []
+    };
 
     constructor(props) {
         super(props);
@@ -27,13 +32,40 @@ class MainPage extends Component {
     }
 
     componentDidMount() {
+        this.loadCsv();
         this.setStore();
+    }
 
+    loadCsv() {
+        const proxyurl = "https://cors-anywhere.herokuapp.com/";
+        axios({
+            url: proxyurl + GIT_URL,
+            method: 'GET',
+            //responseType: 'application/json',
+        })
+            .then(function (response) {
+                // handle success
+                //   console.log("1", response.data);
+                // console.log("2", response.status);
+                // console.log("3", response.statusText);
+                // console.log("4", response.headers);
+                // console.log("5", response.config);
+                let data = response.data;
+                console.log("1", data);
+                this.setState({data: data});
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+            })
     }
 
     setStore() {
         // Use processCsvData helper to convert csv file into kepler.gl structure {fields, rows}
-        const data = Processors.processCsvData(covidData);
+        //const data = Processors.processCsvData(covidData);
+        //OR from url
+        console.log("P===========", this.state.data);
+        const data = Processors.processCsvData(this.state.data);
 
         // Create dataset structure
         const dataset = {
