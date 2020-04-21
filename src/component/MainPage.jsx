@@ -28,64 +28,65 @@ class MainPage extends Component {
 
     constructor(props) {
         super(props);
+        //this.loadCsv = this.loadCsv.bind(this);
         this.setStore = this.setStore.bind(this);
+
     }
 
     componentDidMount() {
-        this.loadCsv();
         this.setStore();
     }
 
-    loadCsv() {
+    loadCsv = async () => {
         const proxyurl = "https://cors-anywhere.herokuapp.com/";
-        axios({
+
+        const response = await axios({
             url: proxyurl + GIT_URL,
             method: 'GET',
             //responseType: 'application/json',
         })
-            .then(function (response) {
-                // handle success
-                //   console.log("1", response.data);
-                // console.log("2", response.status);
-                // console.log("3", response.statusText);
-                // console.log("4", response.headers);
-                // console.log("5", response.config);
-                let data = response.data;
-                console.log("1", data);
-                this.setState({data: data});
+            .then(response => {
+                return response;
             })
-            .catch(function (error) {
+            .catch(error => {
                 // handle error
                 console.log(error);
             })
+
+        let data = await Processors.processCsvData(await response.data);
+        return data;
     }
 
     setStore() {
         // Use processCsvData helper to convert csv file into kepler.gl structure {fields, rows}
         //const data = Processors.processCsvData(covidData);
-        //OR from url
-        console.log("P===========", this.state.data);
-        const data = Processors.processCsvData(this.state.data);
 
-        // Create dataset structure
-        const dataset = {
-            data: data,
-            info: {
-                // `info` property are optional, adding an `id` associate with this dataset makes it easier
-                // to replace it later
-                id: 'my_data'
-            },
+        //OR load from url
+        this.loadCsv().then(result => {
+            console.log("555", result);
+            let data =result;
+            console.log("P == =========", data);
 
-        };
+            // Create dataset structure
+            const dataset = {
+                data: data,
+                info: {
+                    // `info` property are optional, adding an `id` associate with this dataset makes it easier
+                    // to replace it later
+                    id: 'my_data'
+                },
 
-        const options = {
-            centerMap: true,
-            readOnly: true
-        };
+            };
 
-        // addDataToMap action to inject dataset into kepler.gl instance
-        store.dispatch(addDataToMap({datasets: dataset, option: options, config: config}));
+            const options = {
+                centerMap: true,
+                readOnly: true
+            };
 
+            // addDataToMap action to inject dataset into kepler.gl instance
+            store.dispatch(addDataToMap({datasets: dataset, option: options, config: config}));
+
+        });
     }
 
     // This method is used as reference to show how to export the current kepler.gl instance configuration
