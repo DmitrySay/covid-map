@@ -12,6 +12,9 @@ const customizedKeplerGlReducer = keplerGlReducer
             // hide side panel to disallow user customize the map
             readOnly: true,
 
+            // hide add data to map pop up
+            currentModal: null,
+
             //customize which map control button to show
             mapControls: {
                 mapDraw :{

@@ -18,7 +18,7 @@ import axios from 'axios';
 
 //const MAPBOX_TOKEN = process.env.MapboxAccessToken;
 const MAPBOX_TOKEN = 'pk.eyJ1Ijoic2R2MSIsImEiOiJjazh5cDFzY2Ywa2MyM2V0YWMwbjIyc253In0.zrh-D0UvFa2b-fe2hBToLQ';
-const GIT_URL = 'https://raw.githubusercontent.com/DmitrySay/covid-map/master/src/data/report.csv';
+const GIT_URL = 'https://raw.githubusercontent.com/DmitrySay/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/04-20-2020.csv';
 
 
 class MainPage extends Component {
@@ -63,9 +63,7 @@ class MainPage extends Component {
 
         //OR load from url
         this.loadCsv().then(result => {
-            console.log("555", result);
             let data =result;
-            console.log("P == =========", data);
 
             // Create dataset structure
             const dataset = {
