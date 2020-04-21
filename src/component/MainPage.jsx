@@ -15,6 +15,7 @@ import KeplerGlSchema from 'kepler.gl/schemas';
 import downloadJsonFile from "./File-download";
 
 import axios from 'axios';
+import DevelopedBy from "./DevelopedBy";
 
 //const MAPBOX_TOKEN = process.env.MapboxAccessToken;
 const MAPBOX_TOKEN = 'pk.eyJ1Ijoic2R2MSIsImEiOiJjazh5cDFzY2Ywa2MyM2V0YWMwbjIyc253In0.zrh-D0UvFa2b-fe2hBToLQ';
@@ -28,7 +29,6 @@ class MainPage extends Component {
 
     constructor(props) {
         super(props);
-        //this.loadCsv = this.loadCsv.bind(this);
         this.setStore = this.setStore.bind(this);
 
     }
@@ -43,7 +43,6 @@ class MainPage extends Component {
         const response = await axios({
             url: proxyurl + GIT_URL,
             method: 'GET',
-            //responseType: 'application/json',
         })
             .then(response => {
                 return response;
@@ -63,7 +62,7 @@ class MainPage extends Component {
 
         //OR load from url
         this.loadCsv().then(result => {
-            let data =result;
+            let data = result;
 
             // Create dataset structure
             const dataset = {
@@ -112,6 +111,7 @@ class MainPage extends Component {
         return (
             <div style={{position: 'absolute', width: '100%', height: '100%', minHeight: '70vh'}}>
                 {/*<Button onClick={this.exportMapConfig}>Export Config</Button>*/}
+                <DevelopedBy/>
                 <AutoSizer>
                     {({height, width}) => (
                         <KeplerGl
@@ -121,6 +121,7 @@ class MainPage extends Component {
                             height={height}
                         />
                     )}
+
                 </AutoSizer>
             </div>
         );
